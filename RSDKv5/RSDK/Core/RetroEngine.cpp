@@ -676,7 +676,7 @@ void RSDK::InitEngine()
 
             Legacy::v4::LoadGameConfig("Data/Game/GameConfig.bin");
             if (!useDataPack)
-                sprintf_s(gameVerInfo.gameTitle, sizeof(gameVerInfo.gameTitle), "%s (Data Folder)", gameVerInfo.gameTitle);
+                strcat(gameVerInfo.gameTitle, " (Data Folder)");
             strcpy(gameVerInfo.version, "Legacy v4 Mode");
 
             RSDK::GenerateBlendLookupTable();
@@ -717,7 +717,7 @@ void RSDK::InitEngine()
 
             Legacy::v3::LoadGameConfig("Data/Game/GameConfig.bin");
             if (!useDataPack)
-                sprintf_s(gameVerInfo.gameTitle, sizeof(gameVerInfo.gameTitle), "%s (Data Folder)", gameVerInfo.gameTitle);
+                strcat(gameVerInfo.gameTitle, " (Data Folder)");
             strcpy(gameVerInfo.version, "Legacy v3 Mode");
 
             RSDK::GenerateBlendLookupTable();
@@ -1035,7 +1035,7 @@ void RSDK::LoadGameConfig()
 
         ReadString(&info, gameVerInfo.gameTitle);
         if (!useDataPack)
-            sprintf_s(gameVerInfo.gameTitle, sizeof(gameVerInfo.gameTitle), "%s (Data Folder)", gameVerInfo.gameTitle);
+            strcat(gameVerInfo.gameTitle, " (Data Folder)");
         ReadString(&info, gameVerInfo.gameSubtitle);
         ReadString(&info, gameVerInfo.version);
 
@@ -1048,7 +1048,7 @@ void RSDK::LoadGameConfig()
             ReadString(&info, textBuffer);
 
             RETRO_HASH_MD5(hash);
-            GEN_HASH_MD5(textBuffer, hash);
+            GEN_HASH_MD5_BUFFER(textBuffer, hash);
 
             if (objectClassCount > 0) {
                 globalObjectIDs[globalObjectCount] = 0;
@@ -1210,18 +1210,18 @@ void RSDK::InitGameLink()
 #if RETRO_REV0U
     RegisterObject((Object **)&DefaultObject, ":DefaultObject:", sizeof(EntityDefaultObject), sizeof(ObjectDefaultObject), DefaultObject_Update,
                    DefaultObject_LateUpdate, DefaultObject_StaticUpdate, DefaultObject_Draw, DefaultObject_Create, DefaultObject_StageLoad,
-                   DefaultObject_EditorDraw, DefaultObject_EditorLoad, DefaultObject_Serialize, (void (*)(Object *))DefaultObject_StaticLoad);
+                   DefaultObject_EditorLoad, DefaultObject_EditorDraw, DefaultObject_Serialize, (void (*)(Object *))DefaultObject_StaticLoad);
 
     RegisterObject((Object **)&DevOutput, ":DevOutput:", sizeof(EntityDevOutput), sizeof(ObjectDevOutput), DevOutput_Update, DevOutput_LateUpdate,
-                   DevOutput_StaticUpdate, DevOutput_Draw, DevOutput_Create, DevOutput_StageLoad, DevOutput_EditorDraw, DevOutput_EditorLoad,
+                   DevOutput_StaticUpdate, DevOutput_Draw, DevOutput_Create, DevOutput_StageLoad, DevOutput_EditorLoad, DevOutput_EditorDraw,
                    DevOutput_Serialize, (void (*)(Object *))DevOutput_StaticLoad);
 #else
     RegisterObject((Object **)&DefaultObject, ":DefaultObject:", sizeof(EntityDefaultObject), sizeof(ObjectDefaultObject), DefaultObject_Update,
                    DefaultObject_LateUpdate, DefaultObject_StaticUpdate, DefaultObject_Draw, DefaultObject_Create, DefaultObject_StageLoad,
-                   DefaultObject_EditorDraw, DefaultObject_EditorLoad, DefaultObject_Serialize);
+                   DefaultObject_EditorLoad, DefaultObject_EditorDraw, DefaultObject_Serialize);
 #if RETRO_REV02
     RegisterObject((Object **)&DevOutput, ":DevOutput:", sizeof(EntityDevOutput), sizeof(ObjectDevOutput), DevOutput_Update, DevOutput_LateUpdate,
-                   DevOutput_StaticUpdate, DevOutput_Draw, DevOutput_Create, DevOutput_StageLoad, DevOutput_EditorDraw, DevOutput_EditorLoad,
+                   DevOutput_StaticUpdate, DevOutput_Draw, DevOutput_Create, DevOutput_StageLoad, DevOutput_EditorLoad, DevOutput_EditorDraw,
                    DevOutput_Serialize);
 #endif
 #endif

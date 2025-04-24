@@ -548,6 +548,15 @@ void RSDK::DevMenu_MainMenu()
             default: break;
         }
     }
+#if !RETRO_USE_ORIGINAL_CODE
+#if RETRO_REV02
+    else if (SKU::userCore->GetConfirmButtonFlip() ? controller[CONT_ANY].keyA.press : controller[CONT_ANY].keyB.press) {
+#else
+    else if (SKU::GetConfirmButtonFlip() ? controller[CONT_ANY].keyA.press : controller[CONT_ANY].keyB.press) {
+#endif
+        CloseDevMenu();
+    }
+#endif
 }
 void RSDK::DevMenu_CategorySelectMenu()
 {
@@ -1864,7 +1873,7 @@ void RSDK::DevMenu_ModsMenu()
     int32 y = dy + 40;
     for (int32 i = 0; i < 8; ++i) {
         if (devMenu.scrollPos + i < modList.size()) {
-            DrawDevString(modList[(devMenu.scrollPos + i)].id.c_str(), currentScreen->center.x - 96, y, ALIGN_LEFT, selectionColors[i]);
+            DrawDevString(modList[(devMenu.scrollPos + i)].name.c_str(), currentScreen->center.x - 96, y, ALIGN_LEFT, selectionColors[i]);
             DrawDevString(modList[(devMenu.scrollPos + i)].active ? "Y" : "N", currentScreen->center.x + 96, y, ALIGN_RIGHT, selectionColors[i]);
 
             y += 8;
